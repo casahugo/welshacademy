@@ -27,6 +27,7 @@ type Recipes []Recipe
 
 type RecipeRepository interface {
 	FindAll(filters string) (Recipes, error)
+	Get(id int) (Recipe, error)
 	Save(entity Recipe) error
 }
 
@@ -35,6 +36,10 @@ type InMemoryRecipeRepository struct {
 
 func (s InMemoryRecipeRepository) FindAll(filters string) (Recipes, error) {
 	return Recipes{}, nil
+}
+
+func (s InMemoryRecipeRepository) Get(id int) (Recipe, error) {
+	return Recipe{}, nil
 }
 
 func (s InMemoryRecipeRepository) Save(entity Recipe) error {

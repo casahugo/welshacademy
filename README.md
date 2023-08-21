@@ -1,5 +1,4 @@
 # Welsh academy
-[![coverage report](https://github.com/casahugo/go-welsh-academy/badges/master/coverage.svg)](https://github.com/casahugo/go-welsh-academy/badges/master/coverage.svg)
 
 "Welsh Academy" is an application dedicated to provide recipes to cheddar lovers around the world.
 

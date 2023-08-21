@@ -37,5 +37,7 @@ func (service CreateRecipe) Create(
 		}
 	}
 
+	service.Repository.Save(recipe)
+
 	return recipe, nil
 }
