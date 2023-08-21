@@ -5,16 +5,16 @@
 
 Your duty here is to provide a backend in order to allow our cheddar experts to:
 
-Create ingredients
-Create recipes of meals using the previously created ingredients
+- Create ingredients
+- Create recipes of meals using the previously created ingredients
 For the moment, admins will be the one that create users though the API (don't worry about permission management, the cheese world is a kind world)
 
 A user should be able to enjoy the recipes by using the API to:
 
-list all existing ingredients
-list all possible recipes (with or without ingredient constraints)
-flag/unflag recipes as his favorite ones
-list his favorite recipes
+- list all existing ingredients
+- list all possible recipes (with or without ingredient constraints)
+- flag/unflag recipes as his favorite ones
+- list his favorite recipes
 
 Hints:
 - Design and build this API
@@ -30,8 +30,8 @@ we should be able to run the application in a container
 
 ## Requirements
 
-- [Docker](https://docs.docker.com/install/#supported-platforms) >= 18.09.6
-- [Docker compose](https://docs.docker.com/compose/install) >= 1.24.0
+- [Docker](https://docs.docker.com/install/#supported-platforms) >= 24.0.4
+- [Docker compose](https://docs.docker.com/compose/install) >= 2.5.0
 
 ## Install
 

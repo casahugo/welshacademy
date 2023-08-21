@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+    title: Welsh Academy
+    version: "1.0"
+servers:
+    - url: http://localhost:8080
+      description: Local dev API
+
+components:
+    schemas:
+        Ingredient:
+            type: object
+            properties:
+                date:
+                    type: string
+                elec:
+                    $ref: '#/components/schemas/PrixDetail'
+                gaz:
+                    $ref: '#/components/schemas/PrixDetail'
+                arenh:
+                    type: number
+                    format: float
+            example:
+                date: "2021-06-25T00:00:00Z"
+        Recipe:
+            type: object
+            properties:
+                prix:
+                    type: number
+                    format: float
+                prix_annee_2:
+                    type: number
+                    format: float
+                prix_annee_3:
+                    type: number
+                    format: float
+                prix_moyen:
+                    type: number
+                    format: float
+            example:
+                prix: 12.
+    parameters:
+        Date:
+            name: date
+            in : path
+            required: true
+            description: Date souhaitée
+            schema:
+                type: string
+                format: date
+
+paths:
+    /ingredient:
+        get:
+            summary: "List all existing ingredients"
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Ingredient'
+    /recipe:
+        get:
+            summary: "list all possible recipes"
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Recipe'
+                                    
+                '404':
+                    description: "Prix introuvable"
+    /recipe/favorite:
+        get:
+            summary: "list his favorite recipes"
+            responses:
+                '200':
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Recipe'
