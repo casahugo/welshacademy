@@ -1,7 +1,6 @@
 package application
 
 import (
-	"errors"
 	"time"
 	"welshacademy/src/domain"
 )
@@ -27,17 +26,13 @@ func (service CreateRecipe) Create(
 		ingredient, err := service.IngredientRepository.Get(id)
 
 		if err != nil {
-			return recipe, errors.New("ingredient not found")
-		}
-
-		err = recipe.AddIngredient(ingredient, quantity)
-
-		if err != nil {
 			return recipe, err
 		}
+
+		recipe.AddIngredient(ingredient, quantity)
 	}
 
-	service.Repository.Save(recipe)
+	err := service.Repository.Save(recipe)
 
-	return recipe, nil
+	return recipe, err
 }

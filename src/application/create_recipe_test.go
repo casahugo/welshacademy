@@ -39,3 +39,24 @@ func TestCreateRecipe(t *testing.T) {
 		Quantity:   800,
 	})
 }
+
+func TestCreateRecipeWithUnkownIngredient(t *testing.T) {
+	service := CreateRecipe{
+		Repository: domain.InMemoryRecipeRepository{},
+		IngredientRepository: domain.InMemoryIngredientRepository{
+			[]domain.Ingredient{
+				domain.Ingredient{Id: 1, Name: "Bière brune", Unit: "cl"},
+				domain.Ingredient{Id: 2, Name: "Cheddar", Unit: "g"},
+			},
+		},
+	}
+
+	_, err := service.Create(
+		"Welsh traditionnel à la bière brune",
+		[]string{},
+		40,
+		map[int]int{9: 4},
+	)
+
+	assert.Equal(t, err.Error(), "ingredient not found")
+}

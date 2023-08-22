@@ -43,7 +43,7 @@ func (r InMemoryIngredientRepository) Get(id int) (Ingredient, error) {
 		}
 	}
 
-	return Ingredient{}, nil
+	return Ingredient{}, errors.New("ingredient not found")
 }
 
 func (r InMemoryIngredientRepository) FindAll() ([]Ingredient, error) {

@@ -3,46 +3,32 @@ package application
 import "welshacademy/src/domain"
 
 type FlagFavoriteRecipe struct {
-	UserRepository   domain.UserRepository
-	RecipeRepository domain.RecipeRepository
+	FavoriteRepository domain.FavoriteRepository
+	RecipeRepository   domain.RecipeRepository
 }
 
-func (service FlagFavoriteRecipe) Add(recipeId int, userId int) error {
-	user, err := service.UserRepository.Get(userId)
-
-	if err != nil {
-		return err
-	}
-
+func (service FlagFavoriteRecipe) Add(user domain.User, recipeId int) error {
 	recipe, err := service.RecipeRepository.Get(recipeId)
 
 	if err != nil {
 		return err
 	}
 
-	user.AddFavorite(recipe)
+	favorite := domain.Favorite{UserId: user.Id, RecipeId: recipe.Id}
 
-	service.UserRepository.Save(user)
+	service.FavoriteRepository.Save(favorite)
 
 	return nil
 }
 
-func (service FlagFavoriteRecipe) Remove(recipeId int, userId int) error {
-	user, err := service.UserRepository.Get(userId)
+func (service FlagFavoriteRecipe) Remove(user domain.User, recipeId int) error {
+	favorite, err := service.FavoriteRepository.Get(user.Id, recipeId)
 
 	if err != nil {
 		return err
 	}
 
-	recipe, err := service.RecipeRepository.Get(recipeId)
-
-	if err != nil {
-		return err
-	}
-
-	user.RemoveFavorite(recipe)
-
-	service.UserRepository.Save(user)
+	service.FavoriteRepository.Delete(favorite)
 
 	return nil
 }
