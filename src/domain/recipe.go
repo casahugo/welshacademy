@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"errors"
 	"time"
 )
 
@@ -24,9 +23,15 @@ func (r *Recipe) AddIngredient(ingredient Ingredient, quantity int) {
 
 type Recipes []Recipe
 
+type RecipeNotFound struct{}
+
+func (e *RecipeNotFound) Error() string {
+	return "recipe not found"
+}
+
 type RecipeRepository interface {
 	FindAll(filters string) (Recipes, error)
-	Get(id int) (Recipe, error)
+	Get(id int) (Recipe, *RecipeNotFound)
 	Save(entity Recipe) error
 }
 
@@ -38,14 +43,14 @@ func (s InMemoryRecipeRepository) FindAll(filters string) (Recipes, error) {
 	return Recipes{}, nil
 }
 
-func (s InMemoryRecipeRepository) Get(id int) (Recipe, error) {
+func (s InMemoryRecipeRepository) Get(id int) (Recipe, *RecipeNotFound) {
 	for _, recipe := range s.Recipes {
 		if recipe.Id == id {
 			return recipe, nil
 		}
 	}
 
-	return Recipe{}, errors.New("recipe not found")
+	return Recipe{}, &RecipeNotFound{}
 }
 
 func (s InMemoryRecipeRepository) Save(entity Recipe) error {
