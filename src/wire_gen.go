@@ -10,6 +10,9 @@ import (
 	"database/sql"
 	"github.com/joho/godotenv"
 	"os"
+	"welshacademy/src/application"
+	"welshacademy/src/domain"
+	"welshacademy/src/infrastructure/mysql"
 )
 
 import (
@@ -20,8 +23,34 @@ import (
 
 func InitApp() (*App, error) {
 	db := getDBMysql()
-	app := &App{
+	ingredientRepository := mysql.IngredientRepository{
 		DBMysql: db,
+	}
+	createIngredient := application.CreateIngredient{
+		Repository: ingredientRepository,
+	}
+	recipeRepository := mysql.RecipeRepository{
+		DBMysql: db,
+	}
+	createRecipe := application.CreateRecipe{
+		Repository:           recipeRepository,
+		IngredientRepository: ingredientRepository,
+	}
+	favoriteRepository := mysql.FavoriteRepository{
+		DBMysql: db,
+	}
+	flagFavoriteRecipe := application.FlagFavoriteRecipe{
+		FavoriteRepository: favoriteRepository,
+		RecipeRepository:   recipeRepository,
+	}
+	app := &App{
+		DBMysql:              db,
+		IngredientRepository: ingredientRepository,
+		CreateIngredient:     createIngredient,
+		RecipeRepository:     recipeRepository,
+		CreateRecipe:         createRecipe,
+		FavoriteRepository:   favoriteRepository,
+		FlagFavoriteRecipe:   flagFavoriteRecipe,
 	}
 	return app, nil
 }
@@ -29,7 +58,13 @@ func InitApp() (*App, error) {
 // container.go:
 
 type App struct {
-	DBMysql *sql.DB
+	DBMysql              *sql.DB
+	IngredientRepository domain.IngredientRepository
+	CreateIngredient     application.CreateIngredient
+	RecipeRepository     domain.RecipeRepository
+	CreateRecipe         application.CreateRecipe
+	FavoriteRepository   domain.FavoriteRepository
+	FlagFavoriteRecipe   application.FlagFavoriteRecipe
 }
 
 func Boot() (*App, error) {

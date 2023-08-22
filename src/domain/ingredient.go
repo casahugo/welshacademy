@@ -21,9 +21,9 @@ func (u Unit) IsValid() error {
 }
 
 type Ingredient struct {
-	Id   int
-	Name string
-	Unit Unit
+	Id   int    `json:"id"`
+	Name string `json:"name"`
+	Unit Unit   `json:"unit"`
 }
 
 type IngredientNotFound struct{}
@@ -34,7 +34,7 @@ func (e *IngredientNotFound) Error() string {
 
 type IngredientRepository interface {
 	Get(id int) (Ingredient, *IngredientNotFound)
-	FindAll() ([]Ingredient, error)
+	FindAll() []Ingredient
 	Save(entity Ingredient) error
 }
 
@@ -52,8 +52,8 @@ func (r InMemoryIngredientRepository) Get(id int) (Ingredient, *IngredientNotFou
 	return Ingredient{}, &IngredientNotFound{}
 }
 
-func (r InMemoryIngredientRepository) FindAll() ([]Ingredient, error) {
-	return []Ingredient{}, nil
+func (r InMemoryIngredientRepository) FindAll() []Ingredient {
+	return []Ingredient{}
 }
 
 func (r InMemoryIngredientRepository) Save(entity Ingredient) error {

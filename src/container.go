@@ -16,9 +16,13 @@ import (
 )
 
 type App struct {
-	DBMysql           *sql.DB
-	RecipeService     domain.RecipeService
-	IngredientService domain.IngredientService
+	DBMysql              *sql.DB
+	IngredientRepository domain.IngredientRepository
+	CreateIngredient     application.CreateIngredient
+	RecipeRepository     domain.RecipeRepository
+	CreateRecipe         application.CreateRecipe
+	FavoriteRepository   domain.FavoriteRepository
+	FlagFavoriteRecipe   application.FlagFavoriteRecipe
 }
 
 func Boot() (*App, error) {
@@ -41,13 +45,17 @@ func InitApp() (*App, error) {
 	panic(wire.Build(
 		getDBMysql,
 
-		wire.Struct(new(mysql.RecipeRepository), "*"),
-		wire.Bind(new(domain.RecipeRepository), new(mysql.RecipeRepository)),
-		application.NewRecipeService,
-
 		wire.Struct(new(mysql.IngredientRepository), "*"),
 		wire.Bind(new(domain.IngredientRepository), new(mysql.IngredientRepository)),
-		application.NewIngredientService,
+		wire.Struct(new(application.CreateIngredient), "*"),
+
+		wire.Struct(new(mysql.RecipeRepository), "*"),
+		wire.Bind(new(domain.RecipeRepository), new(mysql.RecipeRepository)),
+		wire.Struct(new(application.CreateRecipe), "*"),
+
+		wire.Struct(new(mysql.FavoriteRepository), "*"),
+		wire.Bind(new(domain.FavoriteRepository), new(mysql.FavoriteRepository)),
+		wire.Struct(new(application.FlagFavoriteRecipe), "*"),
 
 		wire.Struct(new(App), "*"),
 	))
