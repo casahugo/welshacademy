@@ -46,7 +46,7 @@ func (r IngredientRepository) FindAll() []domain.Ingredient {
 }
 
 func (r IngredientRepository) Save(entity domain.Ingredient) error {
-	if entity.Id > 0 {
+	if entity.Id == 0 {
 		result, err := r.DBMysql.Exec(
 			"insert into ingredient (name, unit) VALUES (?, ?)",
 			entity.Name,

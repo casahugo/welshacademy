@@ -14,11 +14,18 @@ func IngredientsList(repository domain.IngredientRepository) gin.HandlerFunc {
 	})
 }
 
+type PayloadIngredient struct {
+	Name string `json:"name`
+	Unit string `json:"unit`
+}
+
 func CreateIngredient(service application.CreateIngredient) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
+		var requestBody PayloadIngredient
+		c.BindJSON(&requestBody)
 		ingredient, err := service.Create(
-			c.PostForm("name"),
-			c.PostForm("unit"),
+			requestBody.Name,
+			requestBody.Unit,
 		)
 
 		if err != nil {

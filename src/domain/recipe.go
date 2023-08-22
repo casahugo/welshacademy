@@ -10,11 +10,11 @@ type QuantityIngredient struct {
 }
 
 type Recipe struct {
-	Id          int
-	Name        string
-	Ingredients []QuantityIngredient
-	Description []string
-	Duration    time.Duration
+	Id          int                  `json:"id"`
+	Name        string               `json:"name"`
+	Ingredients []QuantityIngredient `json:"ingredients"`
+	Description []string             `json:"description"`
+	Duration    time.Duration        `json:"duration"`
 }
 
 func (r *Recipe) AddIngredient(ingredient Ingredient, quantity int) {

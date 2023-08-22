@@ -27,19 +27,30 @@ func RecipesList(repository domain.RecipeRepository) gin.HandlerFunc {
 	})
 }
 
+type PayloadRecipe struct {
+	Name         string      `json:"name"`
+	Duration     int         `json:"duration"`
+	Descriptions []string    `json:"descriptions"`
+	Ingredients  map[int]int `json:"ingredients"`
+}
+
 func CreateRecipe(service application.CreateRecipe) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
+		var requestBody PayloadRecipe
+
+		c.BindJSON(&requestBody)
+
 		recipe, err := service.Create(
-			c.PostForm("name"),
-			c.PostFormArray("description"),
-			c.GetInt("duration"),
-			map[int]int{},
+			requestBody.Name,
+			requestBody.Descriptions,
+			requestBody.Duration,
+			requestBody.Ingredients,
 		)
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, err)
+			c.JSON(http.StatusBadRequest, err.Error())
 		}
 
-		c.JSON(http.StatusOK, recipe)
+		c.JSON(http.StatusCreated, recipe)
 	})
 }

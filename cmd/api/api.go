@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func setupRouter(application kernel.App) *gin.Engine {
+func setupRouter(app kernel.App) *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.Default())
 
@@ -20,15 +20,15 @@ func setupRouter(application kernel.App) *gin.Engine {
 
 	v1 := router.Group("/api/v1")
 	{
-		v1.GET("/ingredient", controller.IngredientsList(application.IngredientRepository))
-		v1.POST("/ingredient", controller.CreateIngredient(application.CreateIngredient))
+		v1.GET("/ingredient", controller.IngredientsList(app.IngredientRepository))
+		v1.POST("/ingredient", controller.CreateIngredient(app.CreateIngredient))
 
-		v1.GET("/recipe", controller.RecipesList(application.RecipeRepository))
-		v1.POST("/recipe", controller.CreateRecipe(application.CreateRecipe))
+		v1.GET("/recipe", controller.RecipesList(app.RecipeRepository))
+		v1.POST("/recipe", controller.CreateRecipe(app.CreateRecipe))
 
-		v1.GET("/favorite", controller.FavoriteList(application.FavoriteRepository))
-		v1.POST("/favorite", controller.AddFavorite(application.FlagFavoriteRecipe))
-		v1.DELETE("/favorite", controller.RemoveFavorite(application.FlagFavoriteRecipe))
+		v1.GET("/favorite", controller.FavoriteList(app.FavoriteRepository))
+		v1.POST("/favorite/:recipeId", controller.AddFavorite(app.FlagFavoriteRecipe))
+		v1.DELETE("/favorite/:recipeId", controller.RemoveFavorite(app.FlagFavoriteRecipe))
 	}
 
 	return router
