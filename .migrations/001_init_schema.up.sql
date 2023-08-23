@@ -14,7 +14,9 @@ INSERT INTO ingredient VALUES
 (4,"bière brune", "cl"),
 (5,"pain de campagne non tranchée", ""),
 (6,"jambon blanc", "tranche"),
-(7,"oeufs", "");
+(7,"oeufs", ""),
+(8,"bière blonde", "cl"),
+(9,"saint-marcelin", "g");
 
 CREATE TABLE `recipe` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -23,7 +25,9 @@ CREATE TABLE `recipe` (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO recipe VALUES (1, "Welsh traditionnel à la bière brune", 40); 
+INSERT INTO recipe VALUES 
+(1, "Welsh traditionnel à la bière brune", 40),
+(2, "Welsh saint-marcelin à la bière blonde", 40);
 
 CREATE TABLE `recipe_description` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -58,7 +62,15 @@ INSERT INTO recipe_ingredient VALUES
 (1, 4, 25),
 (1, 5, 25),
 (1, 6, 1),
-(1, 7, 4);
+(1, 7, 4),
+(2, 1, 4),
+(2, 2, 1),
+(2, 9, 800),
+(2, 8, 25),
+(2, 5, 25),
+(2, 6, 1),
+(2, 7, 4);
+
 
 CREATE TABLE `favorite` (
     `user_id` int(11) NOT NULL,

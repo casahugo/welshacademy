@@ -2,6 +2,8 @@ package mysql
 
 import (
 	"database/sql"
+	"fmt"
+	"strings"
 	"welshacademy/src/domain"
 )
 
@@ -9,10 +11,15 @@ type RecipeRepository struct {
 	DBMysql *sql.DB
 }
 
-func (r RecipeRepository) Find(filters []int) domain.Recipes {
+func (r RecipeRepository) Find(filters []string) domain.Recipes {
 	var recipes domain.Recipes
-
-	rows, _ := r.DBMysql.Query("select * FROM recipe")
+	var rows *sql.Rows
+	fmt.Println(filters)
+	if len(filters) > 0 {
+		rows, _ = r.DBMysql.Query("select recipe.* FROM recipe left join recipe_ingredient i on recipe.id = i.recipe_id where i.ingredient_id IN (?) group by recipe.id", strings.Join(filters, ","))
+	} else {
+		rows, _ = r.DBMysql.Query("select * FROM recipe")
+	}
 
 	defer rows.Close()
 

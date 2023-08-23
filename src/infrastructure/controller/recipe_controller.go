@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 	"strings"
 	"welshacademy/src/application"
 	"welshacademy/src/domain"
@@ -12,13 +11,11 @@ import (
 
 func RecipesList(repository domain.RecipeRepository) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
-		ingredients := c.PostForm("ingredients")
-
-		var ids []int
+		ingredients := c.Query("ingredients")
+		var ids []string
 
 		if ingredients != "" {
-			for _, split := range strings.Split("ingredients", ",") {
-				id, _ := strconv.Atoi(split)
+			for _, id := range strings.Split(ingredients, ",") {
 				ids = append(ids, id)
 			}
 		}
