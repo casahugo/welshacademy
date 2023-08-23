@@ -105,7 +105,7 @@ func (r RecipeRepository) Get(id int) (domain.Recipe, *domain.RecipeNotFound) {
 	return recipe, nil
 }
 
-func (r RecipeRepository) Save(entity domain.Recipe) error {
+func (r RecipeRepository) Save(entity domain.Recipe) (domain.Recipe, error) {
 	if entity.Id == 0 {
 		result, err := r.DBMysql.Exec(
 			"insert into recipe (name, duration) VALUES (?, ?)",
@@ -114,7 +114,7 @@ func (r RecipeRepository) Save(entity domain.Recipe) error {
 		)
 
 		if err != nil {
-			return err
+			return entity, err
 		}
 
 		id, _ := result.LastInsertId()
@@ -139,5 +139,5 @@ func (r RecipeRepository) Save(entity domain.Recipe) error {
 		}
 	}
 
-	return nil
+	return entity, nil
 }

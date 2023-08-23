@@ -32,7 +32,7 @@ func (service CreateRecipe) Create(
 		recipe.AddIngredient(ingredient, quantity)
 	}
 
-	err := service.Repository.Save(recipe)
+	recipe, err := service.Repository.Save(recipe)
 
 	return recipe, err
 }

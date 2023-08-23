@@ -32,7 +32,7 @@ func (e *RecipeNotFound) Error() string {
 type RecipeRepository interface {
 	Find(filters []string) Recipes
 	Get(id int) (Recipe, *RecipeNotFound)
-	Save(entity Recipe) error
+	Save(entity Recipe) (Recipe, error)
 }
 
 type InMemoryRecipeRepository struct {
@@ -53,6 +53,6 @@ func (s InMemoryRecipeRepository) Get(id int) (Recipe, *RecipeNotFound) {
 	return Recipe{}, &RecipeNotFound{}
 }
 
-func (s InMemoryRecipeRepository) Save(entity Recipe) error {
-	return nil
+func (s InMemoryRecipeRepository) Save(entity Recipe) (Recipe, error) {
+	return entity, nil
 }

@@ -35,7 +35,7 @@ func (e *IngredientNotFound) Error() string {
 type IngredientRepository interface {
 	Get(id int) (Ingredient, *IngredientNotFound)
 	FindAll() []Ingredient
-	Save(entity Ingredient) error
+	Save(entity Ingredient) (Ingredient, error)
 }
 
 type InMemoryIngredientRepository struct {
@@ -56,6 +56,6 @@ func (r InMemoryIngredientRepository) FindAll() []Ingredient {
 	return []Ingredient{}
 }
 
-func (r InMemoryIngredientRepository) Save(entity Ingredient) error {
-	return nil
+func (r InMemoryIngredientRepository) Save(entity Ingredient) (Ingredient, error) {
+	return entity, nil
 }

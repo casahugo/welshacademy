@@ -18,7 +18,7 @@ func (service CreateIngredient) Create(nom string, unit string) (*domain.Ingredi
 		Unit: u,
 	}
 
-	error := service.Repository.Save(ingredient)
+	ingredient, error := service.Repository.Save(ingredient)
 
 	return &ingredient, error
 }

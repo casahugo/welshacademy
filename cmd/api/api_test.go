@@ -85,7 +85,10 @@ func TestCreateRecipe(t *testing.T) {
 		Name:         "Weslh pied noir",
 		Descriptions: []string{"Couper le fromage en rondelle", "Faire préchauffer le four"},
 		Duration:     20,
-		Ingredients:  map[int]int{1: 2, 3: 100},
+		Ingredients: []controller.PayloadIngredients{
+			controller.PayloadIngredients{Id: 1, Quantity: 5},
+			controller.PayloadIngredients{Id: 2, Quantity: 1},
+		},
 	})
 
 	req, _ := http.NewRequest("POST", "/api/v1/recipe", bytes.NewBuffer(jsonValue))

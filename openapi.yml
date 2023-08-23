@@ -137,14 +137,17 @@ paths:
                                     description: durée en minute
                                     example: 20
                                 ingredients:
-                                    additionalProperties:
-                                        type: integer
-                                        description: quantity
-                                        example: 6
-                                        additionalProperties:
-                                          type: integer
-                                          description: ingredientId
-                                          example: 1
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            quantity:
+                                                type: integer
+                                                example: 20
+
 
             responses:
                 201:

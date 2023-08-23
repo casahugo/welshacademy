@@ -24,24 +24,33 @@ func RecipesList(repository domain.RecipeRepository) gin.HandlerFunc {
 	})
 }
 
+type PayloadIngredients struct {
+	Id       int `json:"id"`
+	Quantity int `json:"quantity"`
+}
+
 type PayloadRecipe struct {
-	Name         string      `json:"name"`
-	Duration     int         `json:"duration"`
-	Descriptions []string    `json:"descriptions"`
-	Ingredients  map[int]int `json:"ingredients"`
+	Name         string               `json:"name"`
+	Duration     int                  `json:"duration"`
+	Descriptions []string             `json:"descriptions"`
+	Ingredients  []PayloadIngredients `json:"ingredients"`
 }
 
 func CreateRecipe(service application.CreateRecipe) gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
 		var requestBody PayloadRecipe
-
+		ingredients := make(map[int]int)
 		c.BindJSON(&requestBody)
+
+		for _, item := range requestBody.Ingredients {
+			ingredients[item.Id] = item.Quantity
+		}
 
 		recipe, err := service.Create(
 			requestBody.Name,
 			requestBody.Descriptions,
 			requestBody.Duration,
-			requestBody.Ingredients,
+			ingredients,
 		)
 
 		if err != nil {
