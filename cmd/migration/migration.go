@@ -21,11 +21,10 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
-
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file:///var/www/html/.migrations/",
+		"file:///"+application.AppPath()+"/.migrations/",
 		"mysql",
 		driver,
 	)

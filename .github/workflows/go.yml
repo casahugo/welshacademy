@@ -14,26 +14,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     services:
-      mariadb:
-        image: mariadb:latest
+      db:
+        image: mariadb:10.4
         ports:
-          - 3306
+          - 3306:3306
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: welsh
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
     - uses: actions/checkout@v3
-
+      
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.21'
 
-    - name: Build
-      run: go build -v ./...
-
     - name: Config
-      run: cp .env .env.dist
+      run: cp .env.ci .env
+
     - name: Fixtures
       run: go run cmd/migration/migration.go
 

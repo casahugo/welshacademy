@@ -5,7 +5,10 @@ package welshacademy
 
 import (
 	"database/sql"
+	"errors"
 	"os"
+	"path/filepath"
+	"runtime"
 	"welshacademy/src/application"
 	"welshacademy/src/domain"
 	"welshacademy/src/infrastructure/mysql"
@@ -26,9 +29,23 @@ type App struct {
 }
 
 func Boot() (*App, error) {
-	godotenv.Load()
+	godotenv.Load(AppPath() + "/.env")
 
 	return InitApp()
+}
+
+func filename() (string, error) {
+	_, filename, _, ok := runtime.Caller(1)
+	if !ok {
+		return "", errors.New("unable to get the current filename")
+	}
+	return filename, nil
+}
+
+func AppPath() string {
+	filename, _ := filename()
+
+	return filepath.Dir(filename) + "/.."
 }
 
 func getDBMysql() *sql.DB {

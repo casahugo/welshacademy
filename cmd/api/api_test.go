@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 	kernel "welshacademy/src"
 	"welshacademy/src/infrastructure/controller"
@@ -14,7 +13,6 @@ import (
 )
 
 func TestIngredientList(t *testing.T) {
-	os.Setenv("DATABASE_URL", "root@(db:3306)/welsh")
 	application, _ := kernel.Boot()
 	router := setupRouter(*application)
 
@@ -31,7 +29,6 @@ func TestIngredientList(t *testing.T) {
 }
 
 func TestCreateIngredient(t *testing.T) {
-	os.Setenv("DATABASE_URL", "root@(db:3306)/welsh")
 	application, _ := kernel.Boot()
 	router := setupRouter(*application)
 
@@ -49,7 +46,6 @@ func TestCreateIngredient(t *testing.T) {
 }
 
 func TestRecipeList(t *testing.T) {
-	os.Setenv("DATABASE_URL", "root@(db:3306)/welsh")
 	application, _ := kernel.Boot()
 	router := setupRouter(*application)
 
@@ -62,7 +58,6 @@ func TestRecipeList(t *testing.T) {
 }
 
 func TestFavoriteRecipeList(t *testing.T) {
-	os.Setenv("DATABASE_URL", "root@(db:3306)/welsh")
 	application, _ := kernel.Boot()
 	router := setupRouter(*application)
 
@@ -75,7 +70,6 @@ func TestFavoriteRecipeList(t *testing.T) {
 }
 
 func TestCreateRecipe(t *testing.T) {
-	os.Setenv("DATABASE_URL", "root@(db:3306)/welsh")
 	application, _ := kernel.Boot()
 	router := setupRouter(*application)
 
@@ -98,7 +92,6 @@ func TestCreateRecipe(t *testing.T) {
 }
 
 func TestAddRemoveFavoriteRecipe(t *testing.T) {
-	os.Setenv("DATABASE_URL", "root@(db:3306)/welsh")
 	application, _ := kernel.Boot()
 	router := setupRouter(*application)
 

@@ -1,6 +1,6 @@
 module welshacademy
 
-go 1.18
+go 1.21
 
 require (
 	github.com/apex/gateway v1.1.2
