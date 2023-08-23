@@ -13,6 +13,14 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:latest
+        ports:
+          - 3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_DATABASE: welsh
     steps:
     - uses: actions/checkout@v3
 
@@ -23,6 +31,11 @@ jobs:
 
     - name: Build
       run: go build -v ./...
+
+    - name: Config
+      run: cp .env .env.dist
+    - name: Fixtures
+      run: go run cmd/migration/migration.go
 
     - name: Test
       run: go test -v ./...
