@@ -4,6 +4,8 @@ PID = /tmp/serving.pid
 install: build setup
 
 setup: up
+	sleep 2
+	make database
 	@echo "\n \e[1;42m Application disponible: \e[0m\n http://localhost:8080\n"
 
 build:
@@ -13,7 +15,6 @@ up:
 	$(DOCKER) up -d --remove-orphans --force-recreate
 
 database: 
-	sleep 1
 	$(DOCKER) exec db mysql -e "DROP DATABASE IF EXISTS welsh"
 	$(DOCKER) exec db mysql -e "CREATE DATABASE welsh"
 	$(DOCKER) exec golang go run cmd/migration/migration.go
@@ -41,5 +42,8 @@ start:
 
 restart: kill before start
 	@echo "STARTED" && printf '%*s\n' "40" '' | tr ' ' -
+
+tests: database
+	$(DOCKER) exec golang go test -v ./...
 
 

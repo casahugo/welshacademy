@@ -13,6 +13,7 @@ import (
 func setupRouter(app kernel.App) *gin.Engine {
 	router := gin.Default()
 	router.Use(cors.Default())
+	router.LoadHTMLGlob("template/*")
 
 	router.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, "Welsh Academy api")

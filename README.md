@@ -57,6 +57,11 @@ Stop application
 make stop
 ```
 
+Run tests
+```bash
+make tests
+```
+
 ## Migration SQL
 ```bash
 go run cmd/migration/migration

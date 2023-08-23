@@ -3,7 +3,7 @@ info:
     title: Welsh Academy
     version: "1.0"
 servers:
-    - url: http://localhost:8080
+    - url: http://localhost:8080/api/v1
       description: Local dev API
 
 components:
@@ -11,76 +11,174 @@ components:
         Ingredient:
             type: object
             properties:
-                date:
+                id:
+                    type: integer
+                name: 
                     type: string
-                elec:
-                    $ref: '#/components/schemas/PrixDetail'
-                gaz:
-                    $ref: '#/components/schemas/PrixDetail'
-                arenh:
-                    type: number
-                    format: float
+                unit:
+                    type: string
+                    enum:
+                        - cl
+                        - g
+                        - c.à.s
+                        - tranche
             example:
-                date: "2021-06-25T00:00:00Z"
+                id: 1,
+                name: "Bière brune"
+                unit: "cl"
         Recipe:
             type: object
             properties:
-                prix:
-                    type: number
-                    format: float
-                prix_annee_2:
-                    type: number
-                    format: float
-                prix_annee_3:
-                    type: number
-                    format: float
-                prix_moyen:
-                    type: number
-                    format: float
-            example:
-                prix: 12.
+                id:
+                    type: integer
+                name:
+                    type: string
+                duration:
+                    type: integer
+                description:
+                    type: array
+                    items:
+                        type: string
+                ingredients:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            ingredient: 
+                                $ref: '#/components/schemas/Ingredient'
+                            quantity:
+                                type: integer
+                                example: 20
+
     parameters:
-        Date:
-            name: date
+        recipe_id:
+            name: recipeId
+            description: "Id of recipe"
             in : path
             required: true
-            description: Date souhaitée
             schema:
-                type: string
-                format: date
+                type: integer
 
 paths:
     /ingredient:
         get:
             summary: "List all existing ingredients"
             responses:
-                '200':
+                200:
+                    description: "Return list all existing ingredients"
                     content:
                         application/json:
                             schema:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Ingredient'
+        post:
+            summary: "Create new ingredient"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    nullable: false
+                                    example: Vin blanc
+                                unit:
+                                    type: string
+                                    example: cl
+                                    enum:
+                                        - cl
+                                        - g
+                                        - c.à.s
+                                        - tranche
+            responses:
+                201:
+                    description: "Return new created ingredient"
+                    content: 
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Ingredient'
+                400:
+                    description: "Bad request"
     /recipe:
         get:
             summary: "list all possible recipes"
             responses:
-                '200':
+                200:
+                    description: "Return list all possible recipes"
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Recipe'
-                                    
-                '404':
-                    description: "Prix introuvable"
-    /recipe/favorite:
+        post:
+            summary: "Create new recipe"
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                    nullable: false
+                                    example: Vin blanc
+                                descriptions:
+                                    type: array
+                                    items: 
+                                        type: string
+                                        example: "Couper le fromage en dés"
+                                duration:
+                                    type: integer
+                                    description: durée en minute
+                                    example: 20
+                                ingredients:
+                                    additionalProperties:
+                                        type: integer
+                                        description: quantity
+                                        example: 6
+                                        additionalProperties:
+                                          type: integer
+                                          description: ingredientId
+                                          example: 1
+
+            responses:
+                201:
+                    description: "Return new created recipe"
+                    content: 
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Recipe'
+                400:
+                    description: "Bad request"
+    /favorite:
         get:
             summary: "list his favorite recipes"
             responses:
                 '200':
+                    description: "Return list his favorite recipes"
                     content:
                         application/json:
                             schema:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Recipe'
+    /favorite/{recipeId}:
+        parameters:
+            - $ref: '#/components/parameters/recipe_id'
+        post:
+            summary: "Add recipe to favorite"
+            responses:
+                '201':
+                    description: "Favorite added"
+        delete:
+            summary: "Remove recipe to favorite"
+            responses:
+                '204':
+                    description: "Favorite removed"

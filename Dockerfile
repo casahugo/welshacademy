@@ -1,5 +1,8 @@
 FROM golang:1.21
 
+RUN apt update \
+    && apt install build-essential psmisc -y 
+    
 # Fswatch
 RUN wget https://github.com/emcrisostomo/fswatch/releases/download/1.14.0/fswatch-1.14.0.tar.gz \
     && tar -xvzf fswatch-1.14.0.tar.gz \

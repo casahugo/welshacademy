@@ -13,6 +13,11 @@ require (
 )
 
 require (
+	codeberg.org/6543/go-yaml2json v1.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
+)
+
+require (
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/aws/aws-lambda-go v1.24.0 // indirect

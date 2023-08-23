@@ -80,7 +80,7 @@ func (r RecipeRepository) Get(id int) (domain.Recipe, *domain.RecipeNotFound) {
 
 	rowsIngredients.Close()
 
-	/* rowsDesc, _ := r.DBMysql.Query("select * from recipe_description recipe_id = ? order by id", id)
+	rowsDesc, _ := r.DBMysql.Query("select * from recipe_description where recipe_id = ? order by id", id)
 
 	for rowsDesc.Next() {
 		var desc string
@@ -90,7 +90,6 @@ func (r RecipeRepository) Get(id int) (domain.Recipe, *domain.RecipeNotFound) {
 	}
 
 	rowsDesc.Close()
-	*/
 
 	if err != nil {
 		return domain.Recipe{}, &domain.RecipeNotFound{}

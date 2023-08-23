@@ -5,8 +5,8 @@ import (
 )
 
 type QuantityIngredient struct {
-	Ingredient Ingredient
-	Quantity   int
+	Ingredient Ingredient `json:"ingredient"`
+	Quantity   int        `json:"quantity"`
 }
 
 type Recipe struct {
