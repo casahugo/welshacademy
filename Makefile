@@ -5,6 +5,7 @@ install: build setup
 
 setup: up
 	sleep 2
+	cp .env.dist .env
 	make database
 	@echo "\n \e[1;42m Application disponible: \e[0m\n http://localhost:8080\n"
 

@@ -14,28 +14,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     services:
-      mariadb:
-        image: mariadb:latest
+      db:
+        image: mariadb:10.4
         ports:
-          - 3306
+          - 3306:3306
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: welsh
     steps:
     - uses: actions/checkout@v3
-
+      
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.21'
 
-    - name: Build
-      run: go build -v ./...
-
     - name: Config
-      run: cp .env .env.dist
+      run: cp .env.dist .env
+
     - name: Fixtures
-      run: go run cmd/migration/migration.go
+      run: mysql --host 127.0.0.1 --port 3306 -uroot welsh < .migrations/001_init_schema.up.sql
 
     - name: Test
       run: go test -v ./...

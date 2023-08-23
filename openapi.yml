@@ -106,6 +106,13 @@ paths:
                     description: "Bad request"
     /recipe:
         get:
+            parameters:
+              - in: query
+                name: ingredients
+                schema:
+                    type: string
+                    description: "Filter by ingredient id"
+                    example: "1,2"
             summary: "list all possible recipes"
             responses:
                 200:
